@@ -1,46 +1,148 @@
-<!DOCTYPE html>
 <html lang="en">
   <head>
-    <title>Chichi Zhao | Portfolio</title>
-    <meta charset="utf-8" />
-    <meta http-equiv="X-UA-Compatible" content="IE=edge" />
-    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta charset="UTF-8" />
+    <title>Home</title>
 
-    <!-- import the webpage's stylesheet -->
-    <link rel="stylesheet" href="style.css" />
-
-    <!-- import the webpage's javascript file -->
-    <script src="/script.js" defer></script>
-
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Questrial&family=Raleway&display=swap"
+      rel="stylesheet"
+    />
+    <link rel="stylesheet" type="text/css" href="./css/normalize.min.css" />
+    <link rel="stylesheet" type="text/css" href="./css/index.css" />
+    <script>
+      window.exports = { __esModule: true };
+    </script>
   </head>
-  <body>
-    
-<!-- navigation menu -->
-  <div class="wrapper">
-    <nav>
-       <h1><a href="/">Chichi Zhao</a></h1>
-      <ul>
-        <li><a href="cclab/index.html">Work from xxx</a></li>
-        <li>Project <a href="p1.html">#1 </a></li>
-        <li>Project <a href="p2.html">#2 </a></li>
-        <li>Project <a href="p3.html">#3 </a></li>
-        <li>Project <a href="p4.html">#4 </a></li>
-        <li>Project <a href="p5.html">#5 </a></li>
-  
-   
-      </ul>
-    </nav>
-    
-<!-- main content -->
-    <div class="content">
-      <h1>
-         Portfolio
-      </h1>
-     <h2 class="special-h2">
-          
-         <img src="https://cdn.glitch.global/664ba84b-0b15-4c1a-a208-c48e966a8ef1/giphy.gif?v=1675491105591"  style="width: 451px; height: 480px; " /> 
-      </h2>
+
+  <body class="page">
+    <div id="bg">
+      <img src="" alt="" srcset="" />
+
+      <div class="header">
+        <a class="item">HOME</a>
+        <a class="item">WORK</a>
+        <a class="item">WOB</a>
+        <a class="item">ABOUT</a>
+      </div>
+
+      <div class="title">
+        <div>CHICHI</div>
+        <div>ZHAO</div>
+      </div>
     </div>
- </div>
+
+    <div class="tips">
+      <div>Welcome to my design zone.</div>
+      <div>Please be sure to remove your shoes.</div>
+    </div>
+
+    <div class="exhibition">
+      <div class="item">
+        <img src="./assets/1.jpg" />
+      </div>
+      <div class="item">
+        <img src="./assets/2.jpg" />
+      </div>
+      <div class="item">
+        <img src="./assets/3.jpg" />
+      </div>
+      <div class="item">
+        <img src="./assets/4.jpg" />
+      </div>
+      <div class="item">
+        <img src="./assets/5.jpg" />
+      </div>
+      <div class="item">
+        <img src="./assets/6.jpg" />
+      </div>
+      <div class="item">
+        <img src="./assets/7.jpg" />
+      </div>
+      <div class="item">
+        <img src="./assets/8.jpg" />
+      </div>
+      <div class="item">
+        <img src="./assets/9.jpg" />
+      </div>
+      <div class="item">
+        <img src="./assets/10.gif" />
+      </div>
+      <div class="item">
+        <img src="./assets/11.jpg" />
+      </div>
+      <div class="item">
+        <img src="./assets/12.jpg" />
+      </div>
+      <div class="item">
+        <img src="./assets/13.jpg" />
+      </div>
+      <div class="item">
+        <img src="./assets/14.jpg" />
+      </div>
+      <div class="item">
+        <img src="./assets/15.jpg" />
+      </div>
+      <div class="item">
+        <img src="./assets/16.jpg" />
+      </div>
+      <div class="item">
+        <img src="./assets/17.jpg" />
+      </div>
+      <div class="item">
+        <img src="./assets/18.gif" />
+      </div>
+    </div>
+
+    <div class="footer">
+      <div class="column">
+        <div class="item">WORKS</div>
+        <div class="item">WOB</div>
+        <div class="item">About</div>
+      </div>
+      <div class="thanks">Thanks for being here.</div>
+      <div class="column">
+        <div class="item">Instagram</div>
+        <div class="item">Linkdedin</div>
+      </div>
+    </div>
+
+    <!-- Kaleidoscope container. -->
+    <!-- <div id="background">
+      <canvas
+        id="kaleidoscope"
+        style="width: 100%; height: 100%"
+        width="1303"
+        height="920"
+      ></canvas>
+    </div> -->
+
+    <!-- Script. -->
+    <!-- <script src="./js/kaleidoscope.min.js"></script> -->
+    <script
+      src="https://unpkg.com/@free-side/audioworklet-polyfill/dist/audioworklet-polyfill.js"
+      type="text/javascript"
+    ></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/p5.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/p5.js/1.6.0/addons/p5.sound.min.js"></script>
+    <!-- <script src="https://cdn.jsdelivr.net/npm/p5@0.9.0/lib/addons/p5.dom.min.js"></script> -->
+
+    <script src="./js/index.js"></script>
+
+    <!-- <script>
+      // Default usage.
+      var kaleidoscope;
+      window.onload = function () {
+        kaleidoscope = new Kaleidoscope({
+          selector: "#kaleidoscope",
+          shapes: ["oval", "drop", "square", "triangle"],
+          minSize: 100,
+          maxSize: 300,
+          color: ["#F9DC83", "#E8622B", "#e100ff"],
+          globalCompositeOperation: "overlay",
+        });
+      };
+    </script> -->
   </body>
 </html>

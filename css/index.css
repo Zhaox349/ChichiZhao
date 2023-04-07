@@ -1,0 +1,109 @@
+@font-face {
+  font-family: "Galaksinos Slant";
+  src: url(../assets/GalaksinosSlant-1GO5M.ttf);
+}
+@font-face {
+  font-family: "Polesitter";
+  src: url(../assets/Polesitter-ZV11J.otf);
+}
+
+.page {
+  font-family: "Questrial", sans-serif;
+}
+
+.header {
+  padding-top: 23px;
+  display: flex;
+  justify-content: space-around;
+  font-style: normal;
+  font-weight: 400;
+  font-size: 34px;
+  line-height: 32px;
+  color: #ffffff;
+}
+
+#bg {
+  background-color: #e8622b;
+}
+
+#bg .title {
+  font-family: "Galaksinos Slant";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 400px;
+  line-height: 412px;
+  color: #ffffff;
+}
+
+.tips {
+  font-family: "Polesitter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 35px;
+  line-height: 43px;
+  /* or 123% */
+  text-align: center;
+  margin-top: 48px;
+}
+
+.exhibition {
+  margin-top: 50px;
+  display: flex;
+  justify-content: center;
+  flex-wrap: wrap;
+}
+
+.exhibition .item {
+  flex: 0 0 45.75%;
+  /* width: 696px; */
+  height: 445px;
+  margin-right: 22px;
+  margin-top: 24px;
+}
+
+.exhibition .item:nth-of-type(2n) {
+  margin-right: 0px;
+}
+
+.exhibition .item img {
+  width: 100%;
+  height: 100%;
+}
+
+.footer {
+  margin-top: 43px;
+  padding-top: 37px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  margin-left: 49px;
+  margin-right: 49px;
+  padding-bottom: 27px;
+  border-top: 1px solid #f9dc83;
+}
+
+.footer .thanks {
+  font-family: "Polesitter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 35px;
+  line-height: 43px;
+  text-align: center;
+  color: #000000;
+}
+
+.footer .column {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer .column .item {
+  font-family: "Raleway";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 25px;
+
+  color: #000000;
+}
