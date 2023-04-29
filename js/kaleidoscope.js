@@ -1,519 +1,528 @@
-"use strict";
-var __assign = (this && this.__assign) || function () {
-    __assign = Object.assign || function(t) {
-        for (var s, i = 1, n = arguments.length; i < n; i++) {
-            s = arguments[i];
-            for (var p in s) if (Object.prototype.hasOwnProperty.call(s, p))
-                t[p] = s[p];
-        }
-        return t;
+class KaleidoscopeWebGL {
+  constructor(id, t, i, n) {
+    this.inited = !1;
+    this.image_url = "";
+    this.image_load_queue = [];
+    this.has_dimensions = !1;
+    this.init(id, t, n);
+
+    this.baseRotation1 = 0;
+    this.baseRotation2 = 0;
+    this.rotationSpeed1 = 0.001;
+    this.rotationSpeed2 = -0.001;
+    this.rotationCenterX = 0.5;
+    this.rotationCenterY = 0.5;
+  }
+
+  init(id, t, i) {
+    this.defaults = i;
+    this.parameters = {
+      start_time: new Date().getTime(),
+      time: 0,
+      screenWidth: 0,
+      screenHeight: 0,
+      resolution: 1,
     };
-    return __assign.apply(this, arguments);
-};
-exports.__esModule = true;
-var Kaleidoscope = (function () {
-    // Merges the keys of two objects.
-    function extend(source, obj) {
-        Object.keys(obj).forEach(function (key) {
-            source[key] = obj[key];
-        });
-        return source;
+    this.vertex_shader = [
+      "attribute vec3 position;",
+      "void main() {",
+      "\tgl_Position = vec4( position, 1.0 );",
+      "}",
+    ].join("\n");
+    this.fragment_shader = [
+      "#if GL_FRAGMENT_PRECISION_HIGH == 1",
+      "\tprecision highp int;",
+      "\tprecision highp float;",
+      "#endif",
+      "uniform sampler2D uSampler;",
+      "uniform float time;",
+      "uniform float baseRotation1;",
+      "uniform float rotationSpeed1;",
+      "uniform float baseRotation2;",
+      "uniform float rotationSpeed2;",
+      "uniform float sliceAngle;",
+      "uniform float mirrorSlices;",
+      "uniform vec2 zoom;",
+      "uniform vec2 resolution;",
+      "uniform vec2 aspect;",
+      "uniform vec2 center;",
+      "uniform vec2 mouseOffset;",
+      "uniform bool pinch;",
+      "void main( void ) {",
+      "\tvec2 position = -aspect.xy + 2.0 * gl_FragCoord.xy / resolution.xy * aspect.xy;",
+      "\tfloat radius = length(position);",
+      "\tfloat angle = atan(position.y,position.x)+baseRotation1;",
+      "\tfloat slice = mod((angle+time*rotationSpeed1), (sliceAngle*2.0));",
+      "\tif (mirrorSlices * slice>sliceAngle)",
+      "\t{",
+      "\t\tslice = (2.0*sliceAngle-slice);",
+      "\t}",
+      "\tif(pinch)",
+      "\t{",
+      "\t\tfloat rot2 = baseRotation2 + time*rotationSpeed2;",
+      "\t\trot2 = atan(position.y,position.x)+baseRotation2 + time*rotationSpeed2;",
+      "\t\tgl_FragColor = texture2D(uSampler, ( center + length( center ) * vec2( cos(rot2), sin(rot2)) +  mouseOffset +  vec2( cos(slice), sin(slice)) * radius) * zoom );",
+      "\t} else {",
+      "\t\tfloat rot2 = baseRotation2 + time*rotationSpeed2;",
+      "\t\tvec2 rot = vec2(sin(rot2),cos(rot2));",
+      "\t\tvec2 pos = vec2( cos(slice), sin(slice)) * radius + center ;",
+      "\t\tgl_FragColor = texture2D(uSampler, (vec2(pos.x * rot.y + pos.y * rot.x,pos.y * rot.y - pos.x * rot.x)) * zoom  +  mouseOffset, -1.0);",
+      "\t}",
+      "}",
+    ].join("\n");
+    this.canvas = document.getElementById(id);
+    this.canvas.width = this.parentWidth =
+      this.canvas.parentNode.offsetWidth + 2;
+    this.canvas.height = this.parentHeight =
+      this.canvas.parentNode.offsetHeight + 2;
+    try {
+      let n = (this.gl_ctx = this.canvas.getContext("experimental-webgl"));
+      if (!n) throw alert("WebGL not supported");
+      ("cannot create webgl context");
+      this.buffer = n.createBuffer();
+      n.bindBuffer(n.ARRAY_BUFFER, this.buffer);
+      n.bufferData(
+        n.ARRAY_BUFFER,
+        new Float32Array([-1, -1, 1, -1, -1, 1, 1, -1, 1, 1, -1, 1]),
+        n.STATIC_DRAW
+      );
+    } catch (e) {}
+    this.currentProgram = this.createProgram(
+      this.vertex_shader,
+      this.fragment_shader
+    );
+    this.fringePadding = 0.6;
+    this.canvasMousePos = {
+      x: 0,
+      y: 0,
+    };
+    this.canvasMousePrev = {
+      x: -1,
+      y: -1,
+    };
+    this.size = 0;
+    this.sliceWidth = 0;
+    this.renderRequestID = null;
+    this.alphaAvg = [];
+    this.alphaSum = 0;
+    this.betaAvg = [];
+    this.betaSum = 0;
+    this.gammaAvg = [];
+    this.gammaSum = 0;
+    let o = this;
+    this.mouseMove = function (e) {
+      if (o.hasMouseInteraction) {
+        let t = (o.canvas.getBoundingClientRect(), o.zoom / 5),
+          i = e.clientX,
+          n = e.clientY,
+          r = 0.35 * t + (1 - t);
+        (o.canvasMousePos.x = r * i * r), (o.canvasMousePos.y = r * n * r);
+      }
+    }.bind(this);
+    this.touchMove = function (e) {
+      if (o.hasMouseInteraction) {
+        let t = o.canvas.getBoundingClientRect();
+        (o.canvasMousePos.x = e.targetTouches[0].pageX - t.left),
+          (o.canvasMousePos.y = e.targetTouches[0].pageY - t.top);
+      }
+    }.bind(this);
+    window.addEventListener("mousemove", this.mouseMove, !1);
+    window.addEventListener("touchmove", this.touchMove, !1);
+    this.updateSettings(t);
+    t.image && this.loadImage(t.image);
+  }
+
+  updateSettings(e) {
+    let final_value;
+    let value;
+    for (let name in e) {
+      value = final_value = e[name];
+      "zoom" === name
+        ? (final_value = value / 100)
+        : "baseRotation1" === name
+        ? (final_value = (value / 180) * Math.PI)
+        : "rotationSpeed1" === name
+        ? (final_value = value / 1e4)
+        : "baseRotation2" === name
+        ? (final_value = (value / 180) * Math.PI)
+        : "rotationSpeed2" === name
+        ? (final_value = value / 1e4)
+        : "rotationCenterX" === name
+        ? (final_value = value / 100)
+        : "rotationCenterY" === name
+        ? (final_value = value / 100)
+        : (final_value = value);
+      this[name] = final_value;
     }
-    function getRandomInt(max) {
-        return Math.floor(Math.random() * Math.floor(max));
+    this.rotation1 = 0;
+    this.rotation2 = 0;
+  }
+
+  loadImage(e) {
+    let t = this;
+    let i = {
+      h: 576,
+      retina: false,
+      square: false,
+      t: "webgl",
+      // url: "assets/bg.png",
+      url: "assets/bg2.jpg",
+      w: 1024,
+      webgl: true,
+    };
+    this.image_url = i ? i.url : this.defaults.image;
+    this.image_width = i ? i.w : this.defaults.width;
+    this.image_height = i ? i.h : this.defaults.height;
+    // $(this.canvas)
+    //   .closest("[data-backdrop]")
+    //   .find(".loading_animation")
+    //   .removeClass("hidden");
+    this.currentImage = new Image();
+    this.currentImage.crossOrigin = "";
+    this.image_load_queue.push({
+      url: this.image_url,
+      width: this.image_width,
+      height: this.image_height,
+    });
+    this.currentImage.onload = function () {
+      if (!t.destroyed) {
+        // $(t.canvas)
+        //   .closest("[data-backdrop]")
+        //   .find(".loading_animation")
+        //   .addClass("hidden");
+        let e = t.image_load_queue.pop();
+        e &&
+          e.url.split("?")[0] == t.image_url.split("?")[0] &&
+          0 != t.currentImage.width &&
+          (e.width && e.height
+            ? (t.has_dimensions = !0)
+            : (t.has_dimensions = !1),
+          t.updateTexture(),
+          (t.image_load_queue = []));
+      }
+    };
+    t.currentImage.src = this.image_url;
+  }
+
+  updateTexture() {
+    let e = this,
+      t = this.gl_ctx;
+    if (
+      ((this.kTexture = t.createTexture()),
+      t.bindTexture(t.TEXTURE_2D, this.kTexture),
+      (this.textureRatio = 1),
+      !this.isPowerOfTwo(this.currentImage.width) ||
+        !this.isPowerOfTwo(this.currentImage.height))
+    ) {
+      let i = document.createElement("canvas");
+      i.width = this.nextHighestPowerOfTwo(this.currentImage.width);
+      i.height = this.nextHighestPowerOfTwo(this.currentImage.height);
+      i.getContext("2d").drawImage(
+        this.currentImage,
+        0,
+        0,
+        this.currentImage.width,
+        this.currentImage.height,
+        0,
+        0,
+        i.width,
+        i.height
+      );
+      this.textureRatio = this.currentImage.height / this.currentImage.width;
+      this.currentImage = i;
     }
-    // Rotate the point around the center point.
-    function rotate(x, y, centerX, centerY, rad) {
-        var X = Math.cos(rad) * (x - centerX) - Math.sin(rad) * (y - centerY) + centerX;
-        var Y = Math.sin(rad) * (x - centerX) + Math.cos(rad) * (y - centerY) + centerY;
-        return { x: X, y: Y };
+    this.has_dimensions &&
+      (this.textureRatio = this.image_height / this.image_width);
+    t.texImage2D(
+      t.TEXTURE_2D,
+      0,
+      t.RGBA,
+      t.RGBA,
+      t.UNSIGNED_BYTE,
+      this.currentImage
+    );
+    t.texParameteri(t.TEXTURE_2D, t.TEXTURE_MAG_FILTER, t.LINEAR);
+    t.texParameteri(
+      t.TEXTURE_2D,
+      t.TEXTURE_MIN_FILTER,
+      this.mirrorSlices ? t.LINEAR_MIPMAP_NEAREST : t.LINEAR
+    );
+    t.texParameteri(
+      t.TEXTURE_2D,
+      t.TEXTURE_WRAP_S,
+      this.mirrorImageX ? t.MIRRORED_REPEAT : t.REPEAT
+    );
+    t.texParameteri(
+      t.TEXTURE_2D,
+      t.TEXTURE_WRAP_T,
+      this.mirrorImageY ? t.MIRRORED_REPEAT : t.REPEAT
+    );
+    t.generateMipmap(t.TEXTURE_2D);
+    t.bindTexture(t.TEXTURE_2D, null);
+    e.inited = !0;
+  }
+
+  isPowerOfTwo(e) {
+    return 0 == (e & (e - 1));
+  }
+
+  nextHighestPowerOfTwo(e) {
+    --e;
+    for (let t = 1; t < 32; t <<= 1) e |= e >> t;
+    return e + 1;
+  }
+
+  setImage(e) {
+    this.currentImage = e;
+    let t = this;
+    this.currentImage.onload = function () {
+      t.destroyed || t.updateTexture();
+    };
+    this.currentImage.complete && this.updateTexture();
+  }
+
+  setSliceCount = function (e) {
+    this.slices = (2 * e) | 0;
+    this.slices < 4 && (this.slices = 4);
+  };
+
+  setZoom(e) {
+    this.zoom = e;
+    this.zoom <= 1e-6 && (this.zoom = 1e-6);
+    this.zoom > 10 && (this.zoom = 10);
+  }
+
+  setImageMirroring(e, t) {
+    this.mirrorImageX = e;
+    this.mirrorImageY = t;
+    let i = this.gl_ctx;
+    i.texParameteri(
+      i.TEXTURE_2D,
+      i.TEXTURE_WRAP_S,
+      this.mirrorImageX ? i.MIRRORED_REPEAT : i.REPEAT
+    );
+    i.texParameteri(
+      i.TEXTURE_2D,
+      i.TEXTURE_WRAP_T,
+      this.mirrorImageY ? i.MIRRORED_REPEAT : i.REPEAT
+    );
+  }
+
+  setMirrorSlices(e) {
+    this.mirrorSlices = e;
+    let t = this.gl_ctx;
+    t.bindTexture(t.TEXTURE_2D, this.kTexture);
+    t.texParameteri(
+      t.TEXTURE_2D,
+      t.TEXTURE_MIN_FILTER,
+      e ? t.LINEAR_MIPMAP_NEAREST : t.LINEAR
+    );
+    t.bindTexture(t.TEXTURE_2D, null);
+  }
+
+  stop() {
+    this.renderRequestID &&
+      ((
+        window.cancelAnimationFrame ||
+        window.mozCancelAnimationFrame ||
+        window.webkitCancelAnimationFrame ||
+        window.oCancelAnimationFrame
+      )(this.renderRequestID),
+      (this.renderRequestID = null));
+  }
+
+  isActive() {
+    return null != this.renderRequestID;
+  }
+
+  start() {
+    null == this.renderRequestID && this.render();
+  }
+
+  createProgram(e, t) {
+    let i = this.gl_ctx;
+    let n = i.createProgram();
+    let o = this.createShader(e, i.VERTEX_SHADER);
+    let r = this.createShader(
+      "#ifdef GL_ES\nprecision mediump float;\n#endif\n\n" + t,
+      i.FRAGMENT_SHADER
+    );
+    return null == o || null == r
+      ? null
+      : (i.attachShader(n, o),
+        i.attachShader(n, r),
+        i.deleteShader(o),
+        i.deleteShader(r),
+        i.linkProgram(n),
+        i.getProgramParameter(n, i.LINK_STATUS)
+          ? n
+          : (alert(
+              "ERROR:\nVALIDATE_STATUS: " +
+                i.getProgramParameter(n, i.VALIDATE_STATUS) +
+                "\nERROR: " +
+                i.getError() +
+                "\n\n- Vertex Shader -\n" +
+                e +
+                "\n\n- Fragment Shader -\n" +
+                t
+            ),
+            null));
+  }
+
+  createShader(e, t) {
+    let i = this.gl_ctx;
+    let n = i.createShader(t);
+    return (
+      i.shaderSource(n, e),
+      i.compileShader(n),
+      i.getShaderParameter(n, i.COMPILE_STATUS)
+        ? n
+        : (alert(
+            (t == i.VERTEX_SHADER ? "VERTEX" : "FRAGMENT") +
+              " SHADER:\n" +
+              i.getShaderInfoLog(n)
+          ),
+          null)
+    );
+  }
+
+  getCurrentSettings() {
+    return {
+      inited: this.inited,
+      slices: this.slices / 2,
+      baseRotation1: this.baseRotation1,
+      baseRotation2: this.baseRotation2,
+      rotationSpeed1: this.rotationSpeed1,
+      rotationSpeed2: this.rotationSpeed2,
+      rotationCenterX: this.rotationCenterX,
+      rotationCenterY: this.rotationCenterY,
+      zoom: this.zoom,
+      mirrorSlices: this.mirrorSlices,
+      mirrorImageX: this.mirrorImageX,
+      mirrorImageY: this.mirrorImageY,
+      pinch: this.pinch,
+      hasMouseInteraction: this.hasMouseInteraction,
+      hasMotionInteraction: this.hasMotionInteraction,
+      image_width: this.image_width,
+      image_height: this.image_height,
+    };
+  }
+
+  toString() {
+    return "KaleidoscopeWebGL";
+  }
+
+  update() {
+    let i = this;
+    return (
+      window.requestAnimationFrame ||
+      window.mozRequestAnimationFrame ||
+      window.webkitRequestAnimationFrame ||
+      window.oRequestAnimationFrame
+    )(i.render.bind(this));
+  }
+
+  render() {
+    let e = this;
+    if (!this.currentImage) return void (this.renderRequestID = this.update());
+    if (this.currentProgram) {
+      let t = this.currentProgram,
+        i = this.gl_ctx,
+        n = this.parameters,
+        o = this.canvas,
+        r = $(this.canvas).closest(".backdrop").get(0),
+        a = r.offsetWidth,
+        s = r.offsetHeight,
+        u = window.devicePixelRatio;
+      -1 == e.canvasMousePrev.x
+        ? ((e.canvasMousePrev.x = e.canvasMousePos.x),
+          (e.canvasMousePrev.y = e.canvasMousePos.y))
+        : ((e.canvasMousePrev.x =
+            0.2 * e.canvasMousePos.x + 0.8 * e.canvasMousePrev.x),
+          (e.canvasMousePrev.y =
+            0.2 * e.canvasMousePos.y + 0.8 * e.canvasMousePrev.y)),
+        (n.screenWidth == a && n.screenHeight == s && n.resolution == u) ||
+          ((n.screenWidth = a),
+          (n.screenHeight = s),
+          (n.resolution = u),
+          (n.screenWidth = o.width = a),
+          (n.screenHeight = o.height = s),
+          (n.aspectX = a / s),
+          (n.aspectY = 1),
+          i.viewport(0, 0, a, s)),
+        i.clear(i.COLOR_BUFFER_BIT | i.DEPTH_BUFFER_BIT),
+        i.useProgram(t),
+        (n.time = new Date().getTime() - n.start_time),
+        i.uniform1f(i.getUniformLocation(t, "time"), n.time / 1e3),
+        i.uniform1f(
+          i.getUniformLocation(t, "sliceAngle"),
+          (2 * Math.PI) / this.slices
+        ),
+        i.uniform1f(
+          i.getUniformLocation(t, "baseRotation1"),
+          this.baseRotation1 + this.rotation1
+        ),
+        i.uniform1f(
+          i.getUniformLocation(t, "rotationSpeed1"),
+          50 * this.rotationSpeed1
+        ),
+        i.uniform1f(
+          i.getUniformLocation(t, "baseRotation2"),
+          this.baseRotation2 + this.rotation2
+        ),
+        i.uniform1f(
+          i.getUniformLocation(t, "rotationSpeed2"),
+          50 * this.rotationSpeed2
+        ),
+        i.uniform2f(
+          i.getUniformLocation(t, "zoom"),
+          (1.5 / this.zoom) * this.textureRatio,
+          1.5 / this.zoom
+        ),
+        i.uniform1f(
+          i.getUniformLocation(t, "mirrorSlices"),
+          this.mirrorSlices ? 1 : 0
+        ),
+        i.uniform2f(
+          i.getUniformLocation(t, "center"),
+          this.rotationCenterX,
+          this.rotationCenterY
+        ),
+        i.uniform2f(
+          i.getUniformLocation(t, "mouseOffset"),
+          0.005 * this.canvasMousePrev.x,
+          0.005 * this.canvasMousePrev.y
+        ),
+        i.uniform2f(
+          i.getUniformLocation(t, "resolution"),
+          n.screenWidth,
+          n.screenHeight
+        ),
+        i.uniform2f(i.getUniformLocation(t, "aspect"), n.aspectX, n.aspectY),
+        i.uniform1f(i.getUniformLocation(t, "pinch"), this.pinch),
+        i.bindTexture(i.TEXTURE_2D, this.kTexture),
+        i.uniform1i(i.getUniformLocation(t, "uSampler"), 0),
+        i.bindBuffer(i.ARRAY_BUFFER, this.buffer),
+        i.vertexAttribPointer(this.vertex_position, 2, i.FLOAT, !1, 0, 0),
+        i.enableVertexAttribArray(this.vertex_position),
+        i.drawArrays(i.TRIANGLES, 0, 6),
+        i.disableVertexAttribArray(this.vertex_position),
+        (this.renderRequestID = this.update());
     }
-    var Pipe = /** @class */ (function () {
-        function Pipe(context, options) {
-            this.directionX = 0;
-            this.directionY = 0;
-            this.options = null;
-            this.context = null;
-            this.radianAOB = 0;
-            this.pointO = { x: 0, y: 0 };
-            this.pointA = { x: 0, y: 0 };
-            this.pointB = { x: 0, y: 0 };
-            this.isSharp = null;
-            this.inclinationOA = 0;
-            this.interceptOA = 0;
-            this.inclinationOB = 0;
-            this.interceptOB = 0;
-            this.inclinationAB = 0;
-            this.interceptAB = 0;
-            this.context = context;
-            this.options = options;
-            this.radianAOB = (2 * Math.PI) / options.edge;
-            this.calculateBorder();
-            this.initializeEvents();
-        }
-        // Get the center point of the kaleidoscope.
-        Pipe.prototype.getPointO = function () {
-            return this.pointO;
-        };
-        // Get the random point in the pipe.
-        Pipe.prototype.getRandomCoordinates = function () {
-            var x = getRandomInt(Math.max(this.pointO.x, this.pointB.x) - this.pointA.x) +
-                this.pointA.x;
-            var minY;
-            var maxY;
-            var y;
-            if (this.isSharp) {
-                minY = Math.max(this.inclinationOB * x + this.interceptOB, this.inclinationAB * x + this.interceptAB);
-                maxY = this.inclinationOA * x + this.interceptOA;
-            }
-            else {
-                minY = this.inclinationAB * x + this.interceptAB;
-                maxY = Math.min(this.inclinationOA * x + this.interceptOA, this.inclinationOB * x + this.interceptOB);
-            }
-            y = getRandomInt(maxY - minY) + minY;
-            return { x: x, y: y };
-        };
-        // Return whether the particle is in the pipe.
-        Pipe.prototype.isIn = function (particle) {
-            var retval = true;
-            var x = particle.x;
-            var y = particle.y;
-            var size = particle.size * 2; // Oversized
-            if (this.isSharp) {
-                var minY = Math.max(this.inclinationOB * x + this.interceptOB, this.inclinationAB * x + this.interceptAB);
-                var maxY = this.inclinationOA * x + this.interceptOA;
-                if (y - size > maxY || y + size < minY) {
-                    retval = false;
-                }
-            }
-            else {
-                var minY = this.inclinationAB * x + this.interceptAB;
-                var maxY = Math.min(this.inclinationOA * x + this.interceptOA, this.inclinationOB * x + this.interceptOB);
-                if (y - size > maxY || y + size < minY) {
-                    retval = false;
-                }
-            }
-            return retval;
-        };
-        // Draw on a mirror surface.
-        Pipe.prototype.mirror = function (index, drawFunc) {
-            var context = this.context;
-            context.save();
-            context.translate(this.pointO.x, this.pointO.y);
-            context.rotate(this.radianAOB * index);
-            context.translate(-this.pointO.x, -this.pointO.y);
-            context.beginPath();
-            context.moveTo(this.pointO.x, this.pointO.y);
-            context.lineTo(this.pointA.x, this.pointA.y);
-            context.lineTo(this.pointB.x, this.pointB.y);
-            context.closePath();
-            context.clip();
-            drawFunc();
-            context.restore();
-        };
-        // destroy the object.
-        Pipe.prototype.destroy = function () {
-            window.removeEventListener('mousemove', this.listenerMousemove);
-        };
-        // Kick off various things on window resize.
-        Pipe.prototype.resize = function () {
-            this.calculateBorder();
-        };
-        // Register event listeners.
-        Pipe.prototype.initializeEvents = function () {
-            var _this = this;
-            this.listenerMousemove = function (event) {
-                var unit = Math.sqrt(Math.pow((event.clientX - _this.pointO.x), 2) +
-                    Math.pow((event.clientY - _this.pointO.y), 2));
-                if (unit === 0)
-                    return;
-                _this.directionX = (event.clientX - _this.pointO.x) / unit;
-                _this.directionY = (event.clientY - _this.pointO.y) / unit;
-                var element = document.querySelector(_this.options.selector);
-                element.dispatchEvent(new Event('change:direction'));
-            };
-            window.addEventListener('mousemove', this.listenerMousemove);
-        };
-        // Calculate the formula for the border.
-        Pipe.prototype.calculateBorder = function () {
-            var canvas = document.querySelector(this.options.selector);
-            this.pointO.x = canvas.offsetParent
-                ? canvas.offsetParent.clientWidth / 2
-                : canvas.clientWidth / 2;
-            if (canvas.offsetParent && canvas.offsetParent.nodeName === 'BODY') {
-                this.pointO.y = window.innerHeight / 2;
-            }
-            else {
-                this.pointO.y = canvas.offsetParent
-                    ? canvas.offsetParent.clientHeight / 2
-                    : canvas.clientHeight / 2;
-            }
-            var diagonal = Math.sqrt(Math.pow(this.pointO.x, 2) + Math.pow(this.pointO.y, 2));
-            var radius = diagonal / Math.cos(this.radianAOB / 2);
-            this.pointA = {
-                x: (1 - radius / diagonal) * this.pointO.x,
-                y: (1 - radius / diagonal) * this.pointO.y
-            };
-            this.pointB = rotate(this.pointA.x, this.pointA.y, this.pointO.x, this.pointO.y, this.radianAOB);
-            var pointO = this.pointO;
-            var pointA = this.pointA;
-            var pointB = this.pointB;
-            this.isSharp = pointB.x < this.pointO.x;
-            this.inclinationOA = (pointA.y - pointO.y) / (pointA.x - pointO.x);
-            this.interceptOA = pointO.y - this.inclinationOA * pointO.x;
-            this.inclinationOB = (pointB.y - pointO.y) / (pointB.x - pointO.x);
-            this.interceptOB = pointO.y - this.inclinationOB * pointO.x;
-            this.inclinationAB = (pointB.y - pointA.y) / (pointB.x - pointA.x);
-            this.interceptAB = pointA.y - this.inclinationAB * pointA.x;
-        };
-        return Pipe;
-    }());
-    var Particle = /** @class */ (function () {
-        function Particle(context, options, pipe) {
-            this.size = 0;
-            this.x = 0;
-            this.y = 0;
-            this.options = null;
-            this.context = null;
-            this.pipe = null;
-            this.shape = null;
-            this.color = null;
-            this.opacity = 0;
-            this.v = 0;
-            this.radian = (2 * Math.PI) / (getRandomInt(6) + 1);
-            this.directionX = 0;
-            this.directionY = 0;
-            this.context = context;
-            this.options = options;
-            this.pipe = pipe;
-            this.shape = options.shapes[getRandomInt(options.shapes.length)];
-            this.size =
-                getRandomInt(options.maxSize - options.minSize) + options.minSize;
-            this.color = options.color[getRandomInt(options.color.length)];
-            var p = pipe.getRandomCoordinates();
-            this.x = p.x;
-            this.y = p.y;
-            this.v = (Math.random() + 0.5) * options.speed;
-            this.directionX = pipe.directionX;
-            this.directionY = pipe.directionY;
-            this.initializeEvents();
-        }
-        // The particles draw function.
-        Particle.prototype.draw = function () {
-            var context = this.context;
-            switch (this.shape) {
-                case 'circle':
-                    context.save();
-                    // Settings
-                    context.fillStyle = this.color;
-                    context.globalAlpha = this.opacity;
-                    // Draw
-                    context.beginPath();
-                    context.arc(this.x, this.y, this.size / 2, 0, 2 * Math.PI, false);
-                    context.closePath();
-                    context.fill();
-                    context.restore();
-                    break;
-                case 'drop':
-                    context.save();
-                    // Settings
-                    context.fillStyle = this.color;
-                    context.globalAlpha = this.opacity;
-                    // Rotate
-                    context.translate(this.x + this.size / 3, this.y + this.size / 2);
-                    context.rotate(this.radian);
-                    context.translate(-(this.size / 3), -(this.size / 2));
-                    // Draw
-                    context.beginPath();
-                    context.moveTo(0, this.size * (2 / 3));
-                    context.quadraticCurveTo(0, this.size / 3, this.size / 3, 0);
-                    context.quadraticCurveTo(this.size * (2 / 3), this.size * (1 / 3), this.size * (2 / 3), this.size * (2 / 3));
-                    context.arc(this.size * (1 / 3), this.size * (2 / 3), this.size * (1 / 3), 0, Math.PI, false);
-                    context.closePath();
-                    context.fill();
-                    context.restore();
-                    break;
-                case 'heart':
-                    context.save();
-                    // Settings
-                    context.fillStyle = this.color;
-                    context.globalAlpha = this.opacity;
-                    // Rotate
-                    context.translate(this.x + this.size / 2, this.y + this.size / 2);
-                    context.rotate(this.radian);
-                    context.translate(-(this.size / 2), -(this.size / 2));
-                    // Draw
-                    context.beginPath();
-                    context.moveTo(this.size * (75 / 130), this.size * (40 / 140));
-                    context.bezierCurveTo(this.size * (75 / 130), this.size * (37 / 140), this.size * (70 / 130), this.size * (25 / 140), this.size * (50 / 130), this.size * (25 / 140));
-                    context.bezierCurveTo(this.size * (20 / 130), this.size * (25 / 140), this.size * (20 / 130), this.size * (62.5 / 140), this.size * (20 / 130), this.size * (62.5 / 140));
-                    context.bezierCurveTo(this.size * (20 / 130), this.size * (80 / 140), this.size * (40 / 130), this.size * (102 / 140), this.size * (75 / 130), this.size * (120 / 140));
-                    context.bezierCurveTo(this.size * (110 / 130), this.size * (102 / 140), this.size, this.size * (80 / 140), this.size, this.size * (62.5 / 140));
-                    context.bezierCurveTo(this.size, this.size * (62.5 / 140), this.size, this.size * (25 / 140), this.size * (100 / 130), this.size * (25 / 140));
-                    context.bezierCurveTo(this.size * (85 / 130), this.size * (25 / 140), this.size * (75 / 130), this.size * (37 / 140), this.size * (75 / 130), this.size * (40 / 140));
-                    context.fill();
-                    context.restore();
-                    break;
-                case 'oval':
-                    context.save();
-                    // Settings
-                    context.fillStyle = this.color;
-                    context.globalAlpha = this.opacity;
-                    // Rotate
-                    context.translate(this.x + this.size / 2, this.y + this.size / 2);
-                    context.rotate(this.radian);
-                    context.scale(1, 3 / 4);
-                    context.translate(-(this.size / 2), -(this.size / 2));
-                    // Draw
-                    context.beginPath();
-                    context.arc(0, 0, this.size / 2, 0, 2 * Math.PI, false);
-                    context.closePath();
-                    context.fill();
-                    context.restore();
-                    break;
-                case 'square':
-                    context.save();
-                    // Settings
-                    context.fillStyle = this.color;
-                    context.globalAlpha = this.opacity;
-                    // Rotate
-                    context.translate(this.x + this.size / 2, this.y + this.size / 2);
-                    context.rotate(this.radian);
-                    context.translate(-(this.size / 2), -(this.size / 2));
-                    // Draw
-                    context.beginPath();
-                    context.rect(0, 0, this.size, this.size);
-                    context.closePath();
-                    context.fill();
-                    context.restore();
-                    break;
-                case 'star':
-                    context.save();
-                    // Settings
-                    context.fillStyle = this.color;
-                    context.globalAlpha = this.opacity;
-                    // Rotate
-                    context.translate(this.x + this.size / 2, this.y + this.size * (9 / 10));
-                    context.rotate(this.radian);
-                    context.translate(-(this.size / 2), -(this.size * (9 / 10)));
-                    // Draw
-                    context.beginPath();
-                    context.moveTo(0, this.size * (70 / 200));
-                    context.lineTo(this.size, this.size * (70 / 200));
-                    context.lineTo(this.size * (35 / 200), this.size * (180 / 200));
-                    context.lineTo(this.size * (100 / 200), 0);
-                    context.lineTo(this.size * (165 / 200), this.size * (180 / 200));
-                    context.closePath();
-                    context.fill();
-                    context.restore();
-                    break;
-                case 'triangle':
-                    context.save();
-                    // Settings
-                    context.fillStyle = this.color;
-                    context.globalAlpha = this.opacity;
-                    // Rotate
-                    context.translate(this.x + this.size / 2, this.y + (1 - Math.tan(Math.PI / 6) / 2) * this.size);
-                    context.rotate(this.radian);
-                    context.translate(-(this.size / 2), -((1 - Math.tan(Math.PI / 6) / 2) * this.size));
-                    // Draw
-                    context.beginPath();
-                    context.moveTo(0, this.size);
-                    context.lineTo(this.size / 2, (1 - Math.tan(Math.PI / 3) / 2) * this.size);
-                    context.lineTo(this.size, this.size);
-                    context.closePath();
-                    context.fill();
-                    context.restore();
-                    break;
-                case 'wave':
-                    context.save();
-                    // Settings
-                    context.strokeStyle = this.color;
-                    context.globalAlpha = this.opacity;
-                    context.lineWidth = this.size * 0.3;
-                    context.lineJoin = 'round';
-                    context.lineCap = 'round';
-                    // Rotate
-                    context.translate(this.x + this.size * 0.5, this.y + this.size * 0.2);
-                    context.rotate(this.radian);
-                    context.translate(-(this.size * 0.5), -(this.size * 0.2));
-                    // Draw
-                    context.beginPath();
-                    context.moveTo(0, 0);
-                    context.lineTo(this.size * 0.2, this.size * 0.4);
-                    context.lineTo(this.size * 0.4, 0);
-                    context.lineTo(this.size * 0.6, this.size * 0.4);
-                    context.lineTo(this.size * 0.8, 0);
-                    context.lineTo(this.size, this.size * 0.4);
-                    context.stroke();
-                    context.restore();
-                    break;
-                default:
-                    break;
-            }
-        };
-        // This updates the particles coordinates.
-        Particle.prototype.updateCoordinates = function () {
-            if (this.opacity < 1) {
-                this.opacity += 0.1;
-            }
-            if (this.directionX && this.directionY) {
-                this.x += this.v * this.directionX;
-                this.y += this.v * this.directionY;
-            }
-            else {
-                this.y += this.v;
-            }
-            this.radian += this.v * 0.002 * Math.PI;
-        };
-        Particle.prototype.isInPipe = function () {
-            return this.pipe.isIn(this);
-        };
-        // Register event listeners.
-        Particle.prototype.initializeEvents = function () {
-            var _this = this;
-            var element = document.querySelector(this.options.selector);
-            element.addEventListener('change:direction', function () {
-                _this.directionX = _this.pipe.directionX;
-                _this.directionY = _this.pipe.directionY;
-            });
-        };
-        return Particle;
-    }());
-    var Plugin = /** @class */ (function () {
-        // Initialize the plugin with user settings.
-        function Plugin(settings) {
-            this.options = null;
-            this.defaults = {
-                color: ['#FFD1B9', '#564138', '#2E86AB', '#F5F749', '#F24236'],
-                edge: 10,
-                globalCompositeOperation: 'overlay',
-                maxSize: 50,
-                minSize: 30,
-                quantity: 50,
-                selector: null,
-                shapes: ['square', 'circle', 'wave'],
-                speed: 0.3
-            };
-            this.element = null;
-            this.context = null;
-            this.animationID = null;
-            this.pipe = null;
-            this.storage = [];
-            this.options = extend(__assign({}, this.defaults), settings);
-            this.initializeCanvas();
-            this.initializeEvents();
-            this.initializePipe();
-            this.initializeStorage();
-            this.animate();
-        }
-        // destroy the plugin.
-        Plugin.prototype.destroy = function () {
-            this.storage = [];
-            this.element.remove();
-            this.pipe.destroy();
-            window.removeEventListener('resize', this.listenerResize);
-            cancelAnimationFrame(this.animationID);
-        };
-        // Pauses/stops the particle animation.
-        Plugin.prototype.pauseAnimation = function () {
-            if (!this.animationID) {
-                return;
-            }
-            cancelAnimationFrame(this.animationID);
-            this.animationID = null;
-        };
-        // Restarts the particles animation by calling animate.
-        Plugin.prototype.resumeAnimation = function () {
-            if (!this.animationID) {
-                this.animate();
-            }
-        };
-        // Setup the canvas element.
-        Plugin.prototype.initializeCanvas = function () {
-            if (!this.options.selector) {
-                console.warn('ak-kaleidoscope: No selector specified!' +
-                    'Check https://github.com/kawakamiakari/kaleidoscope');
-                return false;
-            }
-            this.element = document.querySelector(this.options.selector);
-            this.context = this.element.getContext('2d');
-            this.element.style.width = '100%';
-            this.element.style.height = '100%';
-            this.resize();
-        };
-        // Register event listeners.
-        Plugin.prototype.initializeEvents = function () {
-            var _this = this;
-            this.listenerResize = function () {
-                _this.resize();
-                _this.pipe.resize();
-            };
-            window.addEventListener('resize', this.listenerResize);
-        };
-        // Initialize the pipe.
-        Plugin.prototype.initializePipe = function () {
-            this.pipe = new Pipe(this.context, this.options);
-        };
-        // Initialize the particle storage.
-        Plugin.prototype.initializeStorage = function () {
-            this.storage = [];
-            for (var i = 0; i < this.options.quantity; i += 1) {
-                this.storage.push(new Particle(this.context, this.options, this.pipe));
-            }
-        };
-        // Animates the plugin particles by calling the draw method.
-        Plugin.prototype.animate = function () {
-            var _this = this;
-            this.draw();
-            this.animationID = requestAnimationFrame(function () { return _this.animate(); });
-        };
-        // Draws the plugin particles.
-        Plugin.prototype.draw = function () {
-            var _this = this;
-            var element = this.element;
-            var context = this.context;
-            context.globalCompositeOperation = this.options.globalCompositeOperation;
-            context.clearRect(0, 0, element.width, element.height);
-            // Update the particles coordinates.
-            this.storage.forEach(function (particle) { return particle.updateCoordinates(); });
-            // Pop the particles what is NOT in the pipe and push the new particles.
-            this.storage = this.storage.filter(function (particle) { return particle.isInPipe(); });
-            for (var i = this.storage.length; i < this.options.quantity; i += 1) {
-                this.storage.push(new Particle(this.context, this.options, this.pipe));
-            }
-            // Draw.
-            for (var i = 0; i < this.options.edge; i += 1) {
-                this.pipe.mirror(i, function () {
-                    _this.storage.forEach(function (particle) { return particle.draw(); });
-                });
-            }
-        };
-        // Kick off various things on window resize.
-        Plugin.prototype.resize = function () {
-            this.element.width = this.element.offsetParent
-                ? this.element.offsetParent.clientWidth
-                : this.element.clientWidth;
-            if (this.element.offsetParent &&
-                this.element.offsetParent.nodeName === 'BODY') {
-                this.element.height = window.innerHeight;
-            }
-            else {
-                this.element.height = this.element.offsetParent
-                    ? this.element.offsetParent.clientHeight
-                    : this.element.clientHeight;
-            }
-        };
-        return Plugin;
-    }());
-    return function (options) { return new Plugin(options); };
-})();
-(function () {
-    if (typeof module !== 'undefined' && module.exports) {
-        module.exports = Kaleidoscope;
-    }
-    else {
-        window.Kaleidoscope = Kaleidoscope;
-    }
-})();
-exports["default"] = Kaleidoscope;
+  }
+
+  destroy() {
+    window.removeEventListener("mousemove", this.mouseMove);
+    window.removeEventListener("touchmove", this.touchMove);
+    this.inited = !1;
+    this.image_load_queue = [];
+    this.gl_ctx = null;
+    this.currentProgram = null;
+    this.parameters = null;
+    this.canvas = null;
+    this.parameters = null;
+    this.vertex_shader = null;
+    this.fragment_shader = null;
+    this.destroyed = !0;
+  }
+}

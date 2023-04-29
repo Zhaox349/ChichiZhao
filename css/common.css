@@ -1,0 +1,64 @@
+@font-face {
+  font-family: "Galaksinos Slant";
+  src: url(../assets/GalaksinosSlant-1GO5M.ttf);
+}
+@font-face {
+  font-family: "Polesitter";
+  src: url(../assets/Polesitter-ZV11J.otf);
+}
+
+.header {
+  font-family: "Polesitter";
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-style: normal;
+  font-weight: 300;
+  font-size: 34px;
+  line-height: 32px;
+  height: 84px;
+  z-index: 99;
+  margin: 0 77px;
+}
+
+.header .item {
+  text-decoration: none;
+}
+
+.footer {
+  margin-top: 43px;
+  padding-top: 37px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  flex-direction: row;
+  margin-left: 49px;
+  margin-right: 49px;
+  padding-bottom: 27px;
+  border-top: 1px solid #f9dc83;
+}
+
+.footer .thanks {
+  font-family: "Polesitter";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 35px;
+  line-height: 43px;
+  text-align: center;
+  color: #000000;
+}
+
+.footer .column {
+  display: flex;
+  flex-direction: column;
+}
+
+.footer .column .item {
+  font-family: "Raleway";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 20px;
+  line-height: 25px;
+
+  color: #000000;
+}
