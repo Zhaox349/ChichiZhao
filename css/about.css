@@ -7,6 +7,10 @@
   src: url(../assets/Polesitter-ZV11J.otf);
 }
 
+p {
+  margin: 0;
+}
+
 .name {
   font-family: "Galaksinos Slant";
   font-style: normal;
@@ -28,9 +32,9 @@
 }
 
 .row .photo {
-  width: 348px;
-  height: 395px;
-  background: #d9d9d9;
+  min-width: 348px;
+  min-height: 395px;
+  background: #ffffff;
   margin-right: 65px;
 }
 
@@ -40,13 +44,13 @@
   font-weight: 400;
   font-size: 18px;
   line-height: 25px;
-  /* or 139% */
-  width: 800px;
 
   color: #000000;
+  margin-right: 161px;
 }
 
 .cv {
+  margin-top: 17px;
   margin-left: 77px;
 
   font-family: "Questrial";
@@ -54,9 +58,10 @@
   font-weight: 400;
   font-size: 18px;
   line-height: 25px;
-  /* or 139% */
   text-decoration-line: underline;
   color: #000000;
+  cursor: pointer;
+  display: block;
 }
 
 .group {
@@ -81,4 +86,8 @@
   /* identical to box height, or 89% */
 
   color: #000000;
+}
+
+.group .content {
+  margin-top: 14px;
 }

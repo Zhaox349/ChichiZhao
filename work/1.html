@@ -5,26 +5,25 @@
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link
-      href="https://fonts.googleapis.com/css2?family=Questrial&family=Raleway&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Questrial&family=Raleway:wght@400;500;700&display=swap"
       rel="stylesheet"
     />
-    <script
-      type="text/javascript"
-      src="http://code.jquery.com/jquery-1.7.1.min.js"
-    ></script>
-    <script
-      type="text/javascript"
-      src="../js/jquery.mousewheel.min.js"
-    ></script>
-    <!-- <script type="text/javascript" src="../js/modernizr.2.5.3.min.js"></script> -->
-    <script type="text/javascript" src="../js/turn.min.js"></script>
-    <!-- <script type="text/javascript" src="../js/turn.html4.min.js"></script>
-    <script type="text/javascript" src="../js/zoom.min.js"></script> -->
 
     <link rel="stylesheet" type="text/css" href="../css/normalize.min.css" />
     <link rel="stylesheet" type="text/css" href="../css/common.css" />
     <link rel="stylesheet" type="text/css" href="../css/work/1.css" />
-    <link rel="stylesheet" type="text/css" href="../css/magazine.css" />
+
+    <link rel="stylesheet" type="text/css" href="./css/jquery.ui.css" />
+    <link rel="stylesheet" type="text/css" href="./css/steve-jobs.css" />
+
+    <script type="text/javascript" src="./js/jquery.min.1.7.js"></script>
+    <script
+      type="text/javascript"
+      src="./js/jquery-ui-1.8.20.custom.min.js"
+    ></script>
+    <script type="text/javascript" src="./js/jquery.mousewheel.min.js"></script>
+    <script type="text/javascript" src="./js/modernizr.2.5.3.min.js"></script>
+    <script type="text/javascript" src="./js/turn.min.js"></script>
 
     <script>
       window.exports = { __esModule: true };
@@ -39,7 +38,7 @@
           color: #59bc71;
           text-shadow: #000 1px 0 0, #000 0 1px 0, #000 -1px 0 0, #000 0 -1px 0;
         "
-        href="index.html"
+        href="../index.html"
         >HOME</a
       >
       <a
@@ -53,12 +52,13 @@
       >
       <a
         class="item"
+        href="../about.html"
         style="
-          color: #55a9df;
-          text-shadow: #e93323 1px 0 0, #e93323 0 1px 0, #e93323 -1px 0 0,
-            #e93323 0 -1px 0;
+          color: #e93323;
+          text-shadow: #f9ee4f 1px 0 0, #f9ee4f 0 1px 0, #f9ee4f -1px 0 0,
+            #f9ee4f 0 -1px 0;
         "
-        >WOB</a
+        >ABOUT</a
       >
       <a
         class="item"
@@ -68,8 +68,9 @@
             #f9ee4f 0 -1px 0;
         "
         href="#"
-        >ABOUT</a
       >
+        <img src="../assets/wxb.jpg" width="118" height="63" />
+      </a>
     </div>
 
     <div class="big-image">
@@ -131,13 +132,22 @@
     </div>
 
     <div class="books">
-      <!-- <div class="magazine-viewport">
-        <div class="container">
-          <div class="magazine">
-             <div ignore="1" class="next-button"></div>
-             <div ignore="1" class="previous-button"></div>
+      <div id="canvas">
+        <div id="book-zoom">
+          <div class="sj-book">
+            <!-- <div depth="5" class="hard"><div class="side"></div></div>
+            <div depth="5" class="hard front-side">
+              <div class="depth"></div>
+            </div>
+            <div class="hard fixed back-side p121">
+              <div class="depth"></div>
+            </div>
+            <div class="hard p122"></div> -->
           </div>
         </div>
+        <!-- <div id="slider-bar" class="turnjs-slider">
+          <div id="slider"></div>
+        </div> -->
       </div>
 
       <div class="thumbnails">
@@ -145,7 +155,7 @@
           <ul>
             <li class="i">
               <img
-                src="../assets/work/1/book/Process1.jpg"
+                src="./pics/Process1.jpg"
                 width="38"
                 height="50"
                 class="page-1"
@@ -154,13 +164,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process2.jpg"
+                src="./pics/Process2.jpg"
                 width="38"
                 height="50"
                 class="page-2"
               />
               <img
-                src="../assets/work/1/book/Process3.jpg"
+                src="./pics/Process3.jpg"
                 width="38"
                 height="50"
                 class="page-3"
@@ -169,13 +179,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process4.jpg"
+                src="./pics/Process4.jpg"
                 width="38"
                 height="50"
                 class="page-4"
               />
               <img
-                src="../assets/work/1/book/Process5.jpg"
+                src="./pics/Process5.jpg"
                 width="38"
                 height="50"
                 class="page-5"
@@ -184,13 +194,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process6.jpg"
+                src="./pics/Process6.jpg"
                 width="38"
                 height="50"
                 class="page-6"
               />
               <img
-                src="../assets/work/1/book/Process7.jpg"
+                src="./pics/Process7.jpg"
                 width="38"
                 height="50"
                 class="page-7"
@@ -199,13 +209,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process8.jpg"
+                src="./pics/Process8.jpg"
                 width="38"
                 height="50"
                 class="page-8"
               />
               <img
-                src="../assets/work/1/book/Process9.jpg"
+                src="./pics/Process9.jpg"
                 width="38"
                 height="50"
                 class="page-9"
@@ -214,476 +224,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process10.jpg"
+                src="./pics/Process10.jpg"
                 width="38"
                 height="50"
                 class="page-10"
               />
               <img
-                src="../assets/work/1/book/Process11.jpg"
-                width="38"
-                height="50"
-                class="page-11"
-              />
-              <span>10-11</span>
-            </li>
-            <li class="i">
-              <img
-                src="../assets/work/1/book/Process12.jpg"
-                width="38"
-                height="50"
-                class="page-12"
-              />
-              <span>12</span>
-            </li>
-          </ul>
-        </div>
-      </div> -->
-
-      <div id="magazine">
-        <div
-          style="background-image: url(../assets/work/1/book/Process1.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process2.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process3.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process4.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process5.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process6.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process7.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process8.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process9.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process10.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process11.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process12.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process13.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process14.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process15.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process16.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process17.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process18.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process19.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process20.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process21.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process22.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process23.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process24.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process25.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process26.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process27.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process28.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process29.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process30.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process31.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process32.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process33.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process34.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process35.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process36.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process37.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process38.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process39.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process40.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process41.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process42.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process43.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process44.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process45.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process46.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process47.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process48.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process49.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process50.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process51.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process52.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process53.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process54.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process55.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process56.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process57.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process58.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process59.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process60.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process61.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process62.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process63.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process64.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process65.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process66.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process67.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process68.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process69.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process70.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process71.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process72.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process73.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process74.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process75.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process76.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process77.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process78.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process79.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process80.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process81.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process82.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process83.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process84.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process85.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process86.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process87.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process88.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process89.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process90.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process91.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process92.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process93.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process94.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process95.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process96.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process97.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process98.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process99.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process100.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process101.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process102.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process103.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process104.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process105.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process106.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process107.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process108.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process109.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process110.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process111.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process112.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process113.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process114.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process115.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process116.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process117.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process118.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process119.jpg)"
-        ></div>
-        <div
-          style="background-image: url(../assets/work/1/book/Process120.jpg)"
-        ></div>
-      </div>
-
-      <div class="thumbnails">
-        <div>
-          <ul>
-            <li class="i">
-              <img
-                src="../assets/work/1/book/Process1.jpg"
-                width="38"
-                height="50"
-                class="page-1"
-              />
-              <span>1</span>
-            </li>
-            <li class="d">
-              <img
-                src="../assets/work/1/book/Process2.jpg"
-                width="38"
-                height="50"
-                class="page-2"
-              />
-              <img
-                src="../assets/work/1/book/Process3.jpg"
-                width="38"
-                height="50"
-                class="page-3"
-              />
-              <span>2-3</span>
-            </li>
-            <li class="d">
-              <img
-                src="../assets/work/1/book/Process4.jpg"
-                width="38"
-                height="50"
-                class="page-4"
-              />
-              <img
-                src="../assets/work/1/book/Process5.jpg"
-                width="38"
-                height="50"
-                class="page-5"
-              />
-              <span>4-5</span>
-            </li>
-            <li class="d">
-              <img
-                src="../assets/work/1/book/Process6.jpg"
-                width="38"
-                height="50"
-                class="page-6"
-              />
-              <img
-                src="../assets/work/1/book/Process7.jpg"
-                width="38"
-                height="50"
-                class="page-7"
-              />
-              <span>6-7</span>
-            </li>
-            <li class="d">
-              <img
-                src="../assets/work/1/book/Process8.jpg"
-                width="38"
-                height="50"
-                class="page-8"
-              />
-              <img
-                src="../assets/work/1/book/Process9.jpg"
-                width="38"
-                height="50"
-                class="page-9"
-              />
-              <span>8-9</span>
-            </li>
-            <li class="d">
-              <img
-                src="../assets/work/1/book/Process10.jpg"
-                width="38"
-                height="50"
-                class="page-10"
-              />
-              <img
-                src="../assets/work/1/book/Process11.jpg"
+                src="./pics/Process11.jpg"
                 width="38"
                 height="50"
                 class="page-11"
@@ -692,13 +239,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process12.jpg"
+                src="./pics/Process12.jpg"
                 width="38"
                 height="50"
                 class="page-12"
               />
               <img
-                src="../assets/work/1/book/Process13.jpg"
+                src="./pics/Process13.jpg"
                 width="38"
                 height="50"
                 class="page-13"
@@ -707,13 +254,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process14.jpg"
+                src="./pics/Process14.jpg"
                 width="38"
                 height="50"
                 class="page-14"
               />
               <img
-                src="../assets/work/1/book/Process15.jpg"
+                src="./pics/Process15.jpg"
                 width="38"
                 height="50"
                 class="page-15"
@@ -722,13 +269,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process16.jpg"
+                src="./pics/Process16.jpg"
                 width="38"
                 height="50"
                 class="page-16"
               />
               <img
-                src="../assets/work/1/book/Process17.jpg"
+                src="./pics/Process17.jpg"
                 width="38"
                 height="50"
                 class="page-17"
@@ -737,13 +284,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process18.jpg"
+                src="./pics/Process18.jpg"
                 width="38"
                 height="50"
                 class="page-18"
               />
               <img
-                src="../assets/work/1/book/Process19.jpg"
+                src="./pics/Process19.jpg"
                 width="38"
                 height="50"
                 class="page-19"
@@ -752,13 +299,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process20.jpg"
+                src="./pics/Process20.jpg"
                 width="38"
                 height="50"
                 class="page-20"
               />
               <img
-                src="../assets/work/1/book/Process21.jpg"
+                src="./pics/Process21.jpg"
                 width="38"
                 height="50"
                 class="page-21"
@@ -767,13 +314,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process22.jpg"
+                src="./pics/Process22.jpg"
                 width="38"
                 height="50"
                 class="page-22"
               />
               <img
-                src="../assets/work/1/book/Process23.jpg"
+                src="./pics/Process23.jpg"
                 width="38"
                 height="50"
                 class="page-23"
@@ -782,13 +329,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process24.jpg"
+                src="./pics/Process24.jpg"
                 width="38"
                 height="50"
                 class="page-24"
               />
               <img
-                src="../assets/work/1/book/Process25.jpg"
+                src="./pics/Process25.jpg"
                 width="38"
                 height="50"
                 class="page-25"
@@ -797,13 +344,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process26.jpg"
+                src="./pics/Process26.jpg"
                 width="38"
                 height="50"
                 class="page-26"
               />
               <img
-                src="../assets/work/1/book/Process27.jpg"
+                src="./pics/Process27.jpg"
                 width="38"
                 height="50"
                 class="page-27"
@@ -812,13 +359,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process28.jpg"
+                src="./pics/Process28.jpg"
                 width="38"
                 height="50"
                 class="page-28"
               />
               <img
-                src="../assets/work/1/book/Process29.jpg"
+                src="./pics/Process29.jpg"
                 width="38"
                 height="50"
                 class="page-29"
@@ -827,13 +374,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process30.jpg"
+                src="./pics/Process30.jpg"
                 width="38"
                 height="50"
                 class="page-30"
               />
               <img
-                src="../assets/work/1/book/Process31.jpg"
+                src="./pics/Process31.jpg"
                 width="38"
                 height="50"
                 class="page-31"
@@ -842,13 +389,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process32.jpg"
+                src="./pics/Process32.jpg"
                 width="38"
                 height="50"
                 class="page-32"
               />
               <img
-                src="../assets/work/1/book/Process33.jpg"
+                src="./pics/Process33.jpg"
                 width="38"
                 height="50"
                 class="page-33"
@@ -857,13 +404,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process34.jpg"
+                src="./pics/Process34.jpg"
                 width="38"
                 height="50"
                 class="page-34"
               />
               <img
-                src="../assets/work/1/book/Process35.jpg"
+                src="./pics/Process35.jpg"
                 width="38"
                 height="50"
                 class="page-35"
@@ -872,13 +419,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process36.jpg"
+                src="./pics/Process36.jpg"
                 width="38"
                 height="50"
                 class="page-36"
               />
               <img
-                src="../assets/work/1/book/Process37.jpg"
+                src="./pics/Process37.jpg"
                 width="38"
                 height="50"
                 class="page-37"
@@ -887,13 +434,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process38.jpg"
+                src="./pics/Process38.jpg"
                 width="38"
                 height="50"
                 class="page-38"
               />
               <img
-                src="../assets/work/1/book/Process39.jpg"
+                src="./pics/Process39.jpg"
                 width="38"
                 height="50"
                 class="page-39"
@@ -902,13 +449,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process40.jpg"
+                src="./pics/Process40.jpg"
                 width="38"
                 height="50"
                 class="page-40"
               />
               <img
-                src="../assets/work/1/book/Process41.jpg"
+                src="./pics/Process41.jpg"
                 width="38"
                 height="50"
                 class="page-41"
@@ -917,13 +464,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process42.jpg"
+                src="./pics/Process42.jpg"
                 width="38"
                 height="50"
                 class="page-42"
               />
               <img
-                src="../assets/work/1/book/Process43.jpg"
+                src="./pics/Process43.jpg"
                 width="38"
                 height="50"
                 class="page-43"
@@ -932,13 +479,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process44.jpg"
+                src="./pics/Process44.jpg"
                 width="38"
                 height="50"
                 class="page-44"
               />
               <img
-                src="../assets/work/1/book/Process45.jpg"
+                src="./pics/Process45.jpg"
                 width="38"
                 height="50"
                 class="page-45"
@@ -947,13 +494,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process46.jpg"
+                src="./pics/Process46.jpg"
                 width="38"
                 height="50"
                 class="page-46"
               />
               <img
-                src="../assets/work/1/book/Process47.jpg"
+                src="./pics/Process47.jpg"
                 width="38"
                 height="50"
                 class="page-47"
@@ -962,13 +509,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process48.jpg"
+                src="./pics/Process48.jpg"
                 width="38"
                 height="50"
                 class="page-48"
               />
               <img
-                src="../assets/work/1/book/Process49.jpg"
+                src="./pics/Process49.jpg"
                 width="38"
                 height="50"
                 class="page-49"
@@ -977,13 +524,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process50.jpg"
+                src="./pics/Process50.jpg"
                 width="38"
                 height="50"
                 class="page-50"
               />
               <img
-                src="../assets/work/1/book/Process51.jpg"
+                src="./pics/Process51.jpg"
                 width="38"
                 height="50"
                 class="page-51"
@@ -992,13 +539,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process52.jpg"
+                src="./pics/Process52.jpg"
                 width="38"
                 height="50"
                 class="page-52"
               />
               <img
-                src="../assets/work/1/book/Process53.jpg"
+                src="./pics/Process53.jpg"
                 width="38"
                 height="50"
                 class="page-53"
@@ -1007,13 +554,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process54.jpg"
+                src="./pics/Process54.jpg"
                 width="38"
                 height="50"
                 class="page-54"
               />
               <img
-                src="../assets/work/1/book/Process55.jpg"
+                src="./pics/Process55.jpg"
                 width="38"
                 height="50"
                 class="page-55"
@@ -1022,13 +569,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process56.jpg"
+                src="./pics/Process56.jpg"
                 width="38"
                 height="50"
                 class="page-56"
               />
               <img
-                src="../assets/work/1/book/Process57.jpg"
+                src="./pics/Process57.jpg"
                 width="38"
                 height="50"
                 class="page-57"
@@ -1037,13 +584,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process58.jpg"
+                src="./pics/Process58.jpg"
                 width="38"
                 height="50"
                 class="page-58"
               />
               <img
-                src="../assets/work/1/book/Process59.jpg"
+                src="./pics/Process59.jpg"
                 width="38"
                 height="50"
                 class="page-59"
@@ -1052,13 +599,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process60.jpg"
+                src="./pics/Process60.jpg"
                 width="38"
                 height="50"
                 class="page-60"
               />
               <img
-                src="../assets/work/1/book/Process61.jpg"
+                src="./pics/Process61.jpg"
                 width="38"
                 height="50"
                 class="page-61"
@@ -1067,13 +614,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process62.jpg"
+                src="./pics/Process62.jpg"
                 width="38"
                 height="50"
                 class="page-62"
               />
               <img
-                src="../assets/work/1/book/Process63.jpg"
+                src="./pics/Process63.jpg"
                 width="38"
                 height="50"
                 class="page-63"
@@ -1082,13 +629,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process64.jpg"
+                src="./pics/Process64.jpg"
                 width="38"
                 height="50"
                 class="page-64"
               />
               <img
-                src="../assets/work/1/book/Process65.jpg"
+                src="./pics/Process65.jpg"
                 width="38"
                 height="50"
                 class="page-65"
@@ -1097,13 +644,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process66.jpg"
+                src="./pics/Process66.jpg"
                 width="38"
                 height="50"
                 class="page-66"
               />
               <img
-                src="../assets/work/1/book/Process67.jpg"
+                src="./pics/Process67.jpg"
                 width="38"
                 height="50"
                 class="page-67"
@@ -1112,13 +659,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process68.jpg"
+                src="./pics/Process68.jpg"
                 width="38"
                 height="50"
                 class="page-68"
               />
               <img
-                src="../assets/work/1/book/Process69.jpg"
+                src="./pics/Process69.jpg"
                 width="38"
                 height="50"
                 class="page-69"
@@ -1127,13 +674,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process70.jpg"
+                src="./pics/Process70.jpg"
                 width="38"
                 height="50"
                 class="page-70"
               />
               <img
-                src="../assets/work/1/book/Process71.jpg"
+                src="./pics/Process71.jpg"
                 width="38"
                 height="50"
                 class="page-71"
@@ -1142,13 +689,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process72.jpg"
+                src="./pics/Process72.jpg"
                 width="38"
                 height="50"
                 class="page-72"
               />
               <img
-                src="../assets/work/1/book/Process73.jpg"
+                src="./pics/Process73.jpg"
                 width="38"
                 height="50"
                 class="page-73"
@@ -1157,13 +704,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process74.jpg"
+                src="./pics/Process74.jpg"
                 width="38"
                 height="50"
                 class="page-74"
               />
               <img
-                src="../assets/work/1/book/Process75.jpg"
+                src="./pics/Process75.jpg"
                 width="38"
                 height="50"
                 class="page-75"
@@ -1172,13 +719,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process76.jpg"
+                src="./pics/Process76.jpg"
                 width="38"
                 height="50"
                 class="page-76"
               />
               <img
-                src="../assets/work/1/book/Process77.jpg"
+                src="./pics/Process77.jpg"
                 width="38"
                 height="50"
                 class="page-77"
@@ -1187,13 +734,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process78.jpg"
+                src="./pics/Process78.jpg"
                 width="38"
                 height="50"
                 class="page-78"
               />
               <img
-                src="../assets/work/1/book/Process79.jpg"
+                src="./pics/Process79.jpg"
                 width="38"
                 height="50"
                 class="page-79"
@@ -1202,13 +749,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process80.jpg"
+                src="./pics/Process80.jpg"
                 width="38"
                 height="50"
                 class="page-80"
               />
               <img
-                src="../assets/work/1/book/Process81.jpg"
+                src="./pics/Process81.jpg"
                 width="38"
                 height="50"
                 class="page-81"
@@ -1217,13 +764,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process82.jpg"
+                src="./pics/Process82.jpg"
                 width="38"
                 height="50"
                 class="page-82"
               />
               <img
-                src="../assets/work/1/book/Process83.jpg"
+                src="./pics/Process83.jpg"
                 width="38"
                 height="50"
                 class="page-83"
@@ -1232,13 +779,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process84.jpg"
+                src="./pics/Process84.jpg"
                 width="38"
                 height="50"
                 class="page-84"
               />
               <img
-                src="../assets/work/1/book/Process85.jpg"
+                src="./pics/Process85.jpg"
                 width="38"
                 height="50"
                 class="page-85"
@@ -1247,13 +794,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process86.jpg"
+                src="./pics/Process86.jpg"
                 width="38"
                 height="50"
                 class="page-86"
               />
               <img
-                src="../assets/work/1/book/Process87.jpg"
+                src="./pics/Process87.jpg"
                 width="38"
                 height="50"
                 class="page-87"
@@ -1262,13 +809,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process88.jpg"
+                src="./pics/Process88.jpg"
                 width="38"
                 height="50"
                 class="page-88"
               />
               <img
-                src="../assets/work/1/book/Process89.jpg"
+                src="./pics/Process89.jpg"
                 width="38"
                 height="50"
                 class="page-89"
@@ -1277,13 +824,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process90.jpg"
+                src="./pics/Process90.jpg"
                 width="38"
                 height="50"
                 class="page-90"
               />
               <img
-                src="../assets/work/1/book/Process91.jpg"
+                src="./pics/Process91.jpg"
                 width="38"
                 height="50"
                 class="page-91"
@@ -1292,13 +839,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process92.jpg"
+                src="./pics/Process92.jpg"
                 width="38"
                 height="50"
                 class="page-92"
               />
               <img
-                src="../assets/work/1/book/Process93.jpg"
+                src="./pics/Process93.jpg"
                 width="38"
                 height="50"
                 class="page-93"
@@ -1307,13 +854,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process94.jpg"
+                src="./pics/Process94.jpg"
                 width="38"
                 height="50"
                 class="page-94"
               />
               <img
-                src="../assets/work/1/book/Process95.jpg"
+                src="./pics/Process95.jpg"
                 width="38"
                 height="50"
                 class="page-95"
@@ -1322,13 +869,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process96.jpg"
+                src="./pics/Process96.jpg"
                 width="38"
                 height="50"
                 class="page-96"
               />
               <img
-                src="../assets/work/1/book/Process97.jpg"
+                src="./pics/Process97.jpg"
                 width="38"
                 height="50"
                 class="page-97"
@@ -1337,13 +884,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process98.jpg"
+                src="./pics/Process98.jpg"
                 width="38"
                 height="50"
                 class="page-98"
               />
               <img
-                src="../assets/work/1/book/Process99.jpg"
+                src="./pics/Process99.jpg"
                 width="38"
                 height="50"
                 class="page-99"
@@ -1352,13 +899,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process100.jpg"
+                src="./pics/Process100.jpg"
                 width="38"
                 height="50"
                 class="page-100"
               />
               <img
-                src="../assets/work/1/book/Process101.jpg"
+                src="./pics/Process101.jpg"
                 width="38"
                 height="50"
                 class="page-101"
@@ -1367,13 +914,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process102.jpg"
+                src="./pics/Process102.jpg"
                 width="38"
                 height="50"
                 class="page-102"
               />
               <img
-                src="../assets/work/1/book/Process103.jpg"
+                src="./pics/Process103.jpg"
                 width="38"
                 height="50"
                 class="page-103"
@@ -1382,13 +929,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process104.jpg"
+                src="./pics/Process104.jpg"
                 width="38"
                 height="50"
                 class="page-104"
               />
               <img
-                src="../assets/work/1/book/Process105.jpg"
+                src="./pics/Process105.jpg"
                 width="38"
                 height="50"
                 class="page-105"
@@ -1397,13 +944,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process106.jpg"
+                src="./pics/Process106.jpg"
                 width="38"
                 height="50"
                 class="page-106"
               />
               <img
-                src="../assets/work/1/book/Process107.jpg"
+                src="./pics/Process107.jpg"
                 width="38"
                 height="50"
                 class="page-107"
@@ -1412,13 +959,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process108.jpg"
+                src="./pics/Process108.jpg"
                 width="38"
                 height="50"
                 class="page-108"
               />
               <img
-                src="../assets/work/1/book/Process109.jpg"
+                src="./pics/Process109.jpg"
                 width="38"
                 height="50"
                 class="page-109"
@@ -1427,13 +974,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process110.jpg"
+                src="./pics/Process110.jpg"
                 width="38"
                 height="50"
                 class="page-110"
               />
               <img
-                src="../assets/work/1/book/Process111.jpg"
+                src="./pics/Process111.jpg"
                 width="38"
                 height="50"
                 class="page-111"
@@ -1442,13 +989,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process112.jpg"
+                src="./pics/Process112.jpg"
                 width="38"
                 height="50"
                 class="page-112"
               />
               <img
-                src="../assets/work/1/book/Process113.jpg"
+                src="./pics/Process113.jpg"
                 width="38"
                 height="50"
                 class="page-113"
@@ -1457,13 +1004,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process114.jpg"
+                src="./pics/Process114.jpg"
                 width="38"
                 height="50"
                 class="page-114"
               />
               <img
-                src="../assets/work/1/book/Process115.jpg"
+                src="./pics/Process115.jpg"
                 width="38"
                 height="50"
                 class="page-115"
@@ -1472,13 +1019,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process116.jpg"
+                src="./pics/Process116.jpg"
                 width="38"
                 height="50"
                 class="page-116"
               />
               <img
-                src="../assets/work/1/book/Process117.jpg"
+                src="./pics/Process117.jpg"
                 width="38"
                 height="50"
                 class="page-117"
@@ -1487,13 +1034,13 @@
             </li>
             <li class="d">
               <img
-                src="../assets/work/1/book/Process118.jpg"
+                src="./pics/Process118.jpg"
                 width="38"
                 height="50"
                 class="page-118"
               />
               <img
-                src="../assets/work/1/book/Process119.jpg"
+                src="./pics/Process119.jpg"
                 width="38"
                 height="50"
                 class="page-119"
@@ -1503,7 +1050,7 @@
 
             <li class="i">
               <img
-                src="../assets/work/1/book/Process12.jpg"
+                src="./pics/Process12.jpg"
                 width="38"
                 height="50"
                 class="page-12"
@@ -1513,6 +1060,9 @@
           </ul>
         </div>
       </div>
+
+      <img class="left-arrow" src="../assets/work/1/left-arrow.jpg" />
+      <img class="right-arrow" src="../assets/work/1/right-arrow.jpg" />
     </div>
 
     <div class="intro-3">
@@ -1532,6 +1082,7 @@
       </div>
     </div>
 
-    <script src="../js/work/1.js"></script>
+    <script src="./js/steve-jobs.js"></script>
+    <script src="./js/1.js"></script>
   </body>
 </html>
