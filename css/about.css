@@ -20,9 +20,19 @@ p {
   padding-left: 71px;
 }
 
+body {
+  background-color: #fbec50;
+}
+
 .bg {
   background-color: #fbec50;
   height: 100vh;
+}
+
+.bg .name {
+  width: 348px;
+  height: 51.12px;
+  margin: 24px 0;
 }
 
 .row {
@@ -34,8 +44,13 @@ p {
 .row .photo {
   min-width: 348px;
   min-height: 395px;
-  background: #ffffff;
   margin-right: 65px;
+  display: inline-table;
+}
+
+.row .photo img {
+  width: 100%;
+  height: 100%;
 }
 
 .row .introduce {

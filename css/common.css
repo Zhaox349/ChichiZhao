@@ -23,6 +23,7 @@
 
 .header .item {
   text-decoration: none;
+  cursor: pointer;
 }
 
 .footer {
@@ -61,4 +62,5 @@
   line-height: 25px;
 
   color: #000000;
+  text-decoration: none;
 }

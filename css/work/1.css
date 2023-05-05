@@ -116,7 +116,7 @@
 }
 
 .intro-3 .img11 {
-  width: 1445px;
+  /* width: 1445px; */
   height: 813px;
   margin: 30px 0;
 }
@@ -128,7 +128,7 @@
   align-items: center;
   justify-content: center;
   position: relative;
-  padding: 100px 0 10px;
+  padding: 31px 0 31px;
   position: relative;
 }
 

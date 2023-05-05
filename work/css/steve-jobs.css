@@ -398,7 +398,7 @@ form {
 }
 
 .thumbnails > div {
-  margin: 20px auto;
+  /* margin: 20px auto; */
 }
 
 .thumbnails ul {
